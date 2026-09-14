@@ -1,0 +1,320 @@
+{
+	"configurations" : 
+	[
+		{
+			"abstractTargets" : 
+			[
+				{
+					"directoryIndex" : 7,
+					"id" : "FLAC::@2c88909a109778213ad3",
+					"jsonFile" : "target-FLAC-Debug-3d38e4b18254c117a3cf.json",
+					"name" : "FLAC",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 6,
+					"id" : "Freetype::@05826a7f30b7c69d94d4",
+					"jsonFile" : "target-Freetype-Debug-1be59c50c62b927431fc.json",
+					"name" : "Freetype",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 7,
+					"id" : "OpenAL::OpenAL::@2c88909a109778213ad3",
+					"jsonFile" : "target-OpenAL__OpenAL-Debug-6ed5cab4b68725fcd94e.json",
+					"name" : "OpenAL::OpenAL",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "OpenGL::@662453be02e81ddd067b",
+					"jsonFile" : "target-OpenGL-Debug-d3c8267d6904fb9f2acb.json",
+					"name" : "OpenGL",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "OpenGL::GL::@662453be02e81ddd067b",
+					"jsonFile" : "target-OpenGL__GL-Debug-76ec0c2b451302aeb3b8.json",
+					"name" : "OpenGL::GL",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "OpenGL::GLU::@662453be02e81ddd067b",
+					"jsonFile" : "target-OpenGL__GLU-Debug-19c823dec29e5079746c.json",
+					"name" : "OpenGL::GLU",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 7,
+					"id" : "VORBIS::@2c88909a109778213ad3",
+					"jsonFile" : "target-VORBIS-Debug-5ad744295ddadf610d56.json",
+					"name" : "VORBIS",
+					"projectIndex" : 1
+				}
+			],
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-b23a0b23c080df4d29ba.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"build" : "lib/SFML",
+					"childIndexes" : 
+					[
+						2
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-lib.SFML-Debug-0b51c0abfb46b27edaa8.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "lib/SFML"
+				},
+				{
+					"build" : "lib/SFML/src/SFML",
+					"childIndexes" : 
+					[
+						3,
+						4,
+						5,
+						6,
+						7
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-lib.SFML.src.SFML-Debug-75c3e305b65b44985bd3.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 1,
+					"source" : "lib/SFML/src/SFML"
+				},
+				{
+					"build" : "lib/SFML/src/SFML/System",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-lib.SFML.src.SFML.System-Debug-7f484f39bfad43ef46ae.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 1,
+					"source" : "lib/SFML/src/SFML/System",
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"abstractTargetIndexes" : 
+					[
+						3,
+						4,
+						5
+					],
+					"build" : "lib/SFML/src/SFML/Window",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-lib.SFML.src.SFML.Window-Debug-4f12e105bdb5a0127ba2.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 1,
+					"source" : "lib/SFML/src/SFML/Window",
+					"targetIndexes" : 
+					[
+						5
+					]
+				},
+				{
+					"build" : "lib/SFML/src/SFML/Network",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-lib.SFML.src.SFML.Network-Debug-6b39cb53fcd56ce03551.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 1,
+					"source" : "lib/SFML/src/SFML/Network",
+					"targetIndexes" : 
+					[
+						3
+					]
+				},
+				{
+					"abstractTargetIndexes" : 
+					[
+						1
+					],
+					"build" : "lib/SFML/src/SFML/Graphics",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-lib.SFML.src.SFML.Graphics-Debug-2c47db2080683df5d8c5.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 1,
+					"source" : "lib/SFML/src/SFML/Graphics",
+					"targetIndexes" : 
+					[
+						2
+					]
+				},
+				{
+					"abstractTargetIndexes" : 
+					[
+						0,
+						2,
+						6
+					],
+					"build" : "lib/SFML/src/SFML/Audio",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-lib.SFML.src.SFML.Audio-Debug-4c88d4e8f2b8104a0665.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 1,
+					"source" : "lib/SFML/src/SFML/Audio",
+					"targetIndexes" : 
+					[
+						1
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "game-engineering-practicals",
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"abstractTargetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6
+					],
+					"directoryIndexes" : 
+					[
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7
+					],
+					"name" : "SFML",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						1,
+						2,
+						3,
+						4,
+						5
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "lab_1::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-lab_1-Debug-f5a15331bdc2e29f4d85.json",
+					"name" : "lab_1",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 7,
+					"id" : "sfml-audio::@2c88909a109778213ad3",
+					"jsonFile" : "target-sfml-audio-Debug-40cd0630cf361cb4f995.json",
+					"name" : "sfml-audio",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 6,
+					"id" : "sfml-graphics::@05826a7f30b7c69d94d4",
+					"jsonFile" : "target-sfml-graphics-Debug-0c42b49f3f44736c1498.json",
+					"name" : "sfml-graphics",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "sfml-network::@c3d7f79628bafd5c7994",
+					"jsonFile" : "target-sfml-network-Debug-bfafb884bbb764390b91.json",
+					"name" : "sfml-network",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "sfml-system::@a0857d3fa2d27435d485",
+					"jsonFile" : "target-sfml-system-Debug-ac3c7b4cd7cf2d3c9000.json",
+					"name" : "sfml-system",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "sfml-window::@662453be02e81ddd067b",
+					"jsonFile" : "target-sfml-window-Debug-3e57b3a86c96a88f282c.json",
+					"name" : "sfml-window",
+					"projectIndex" : 1
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/Users/woozy/Documents/uni year 3/games engineering/labs/game-engineering-practicals/build",
+		"source" : "/Users/woozy/Documents/uni year 3/games engineering/labs/game-engineering-practicals"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 11
+	}
+}
