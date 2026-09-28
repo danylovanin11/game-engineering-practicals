@@ -34,3 +34,10 @@ public:
     void update(const float &dt) override;
     void move_down() override;
 };
+
+class Player : public Ship {
+public:
+    // no copy constructor needed: Player has no member data of its own yet
+    Player();
+    void update(const float &dt) override;
+};

@@ -62,3 +62,37 @@ void Invader::update(const float &dt) {
 void Invader::move_down() {
     move(sf::Vector2f(0.f, param::invader_drop));
 }
+
+// ---------- Player ----------
+
+// the player cannon is the 6th tile (index 5) of the second row of the sheet
+Player::Player()
+    : Ship(sf::IntRect(sf::Vector2i(param::sprite_size * 5, param::sprite_size),
+                       sf::Vector2i(param::sprite_size, param::sprite_size))) {
+    setOrigin(sf::Vector2f(param::sprite_size / 2.f, param::sprite_size / 2.f));
+    // centred horizontally, one sprite above the bottom of the window
+    setPosition(sf::Vector2f(param::game_width / 2.f,
+                             param::game_height - static_cast<float>(param::sprite_size)));
+}
+
+void Player::update(const float &dt) {
+    Ship::update(dt);
+
+    // move left / right, same idea as the paddles in Pong
+    float direction = 0.f;
+    if (sf::Keyboard::isKeyPressed(param::key_left)) {
+        direction--;
+    }
+    if (sf::Keyboard::isKeyPressed(param::key_right)) {
+        direction++;
+    }
+    move(sf::Vector2f(direction * param::player_speed * dt, 0.f));
+
+    // keep the player inside the window
+    const float half_size = param::sprite_size / 2.f;
+    if (getPosition().x < half_size) {
+        setPosition(sf::Vector2f(half_size, getPosition().y));
+    } else if (getPosition().x > param::game_width - half_size) {
+        setPosition(sf::Vector2f(param::game_width - half_size, getPosition().y));
+    }
+}

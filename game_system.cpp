@@ -18,6 +18,10 @@ void GameSystem::init() {
     Invader::direction = true;
     Invader::speed = param::invader_speed;
 
+    // the player is always the first ship in the list
+    std::shared_ptr<Player> player = std::make_shared<Player>();
+    ships.push_back(player);
+
     // grid of invaders: each row uses a different sprite of the sheet
     for (int r = 0; r < param::rows; ++r) {
         sf::IntRect rect(sf::Vector2i(r * param::sprite_size, 0),
