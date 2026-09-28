@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(game-engineering-practicals)
+project(space_invaders)
 # Require modern C++
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -15,7 +15,19 @@ add_subdirectory("lib/SFML")
 set(SFML_INCS "lib/SFML/include")
 link_directories("${CMAKE_BINARY_DIR}/lib/SFML/lib")
 
-#### Practical 1 ####
-add_executable(lab_1 main.cpp)
-target_include_directories(lab_1 PRIVATE ${SFML_INCS})
-target_link_libraries(lab_1 sfml-graphics)
+#### Copy resources next to the executable ####
+add_custom_target(copy_resources ALL
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${PROJECT_SOURCE_DIR}/res"
+        "${OUTPUT_DIRECTORY}/res"
+)
+
+
+
+#### Practical 3 ####
+add_executable(space_invaders main.cpp)
+target_include_directories(space_invaders PRIVATE ${SFML_INCS})
+target_link_libraries(space_invaders sfml-graphics)
+set_target_properties(space_invaders PROPERTIES
+    VS_DEBUGGER_WORKING_DIRECTORY ${OUTPUT_DIRECTORY})
+add_dependencies(space_invaders copy_resources)
