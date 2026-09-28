@@ -13,6 +13,8 @@ public:
     virtual ~Ship() = 0;
     // virtual so it can be overridden, but not pure virtual
     virtual void update(const float &dt);
+    // drops the ship down; does nothing by default (the player ignores it)
+    virtual void move_down();
 
 protected:
     // which tile of the sprite-sheet this ship uses
@@ -21,8 +23,14 @@ protected:
 
 class Invader : public Ship {
 public:
+    // shared by ALL invaders: true = moving right, false = moving left
+    static bool direction;
+    // shared by ALL invaders: current horizontal speed
+    static float speed;
+
     Invader();
     Invader(const Invader &inv);
     Invader(sf::IntRect ir, sf::Vector2f pos);
     void update(const float &dt) override;
+    void move_down() override;
 };

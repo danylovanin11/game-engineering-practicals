@@ -13,7 +13,9 @@ void GameSystem::init() {
     if (!spritesheet.loadFromFile("res/img/invaders_sheet.png")) {
         std::cerr << "Failed to load spritesheet!" << std::endl;
     }
-
+    // shared invader state: start moving right at the initial speed
+    Invader::direction = true;
+    Invader::speed = param::invader_speed;
     // test: one invader of each type from the top row of the sheet
     for (int i = 0; i < 6; ++i) {
         std::shared_ptr<Invader> inv = std::make_shared<Invader>(
