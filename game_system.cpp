@@ -13,16 +13,21 @@ void GameSystem::init() {
     if (!spritesheet.loadFromFile("res/img/invaders_sheet.png")) {
         std::cerr << "Failed to load spritesheet!" << std::endl;
     }
+
     // shared invader state: start moving right at the initial speed
     Invader::direction = true;
     Invader::speed = param::invader_speed;
-    // test: one invader of each type from the top row of the sheet
-    for (int i = 0; i < 6; ++i) {
-        std::shared_ptr<Invader> inv = std::make_shared<Invader>(
-            sf::IntRect(sf::Vector2i(i * param::sprite_size, 0),
-                        sf::Vector2i(param::sprite_size, param::sprite_size)),
-            sf::Vector2f(100.f + i * 50.f, 100.f));
-        ships.push_back(inv);
+
+    // grid of invaders: each row uses a different sprite of the sheet
+    for (int r = 0; r < param::rows; ++r) {
+        sf::IntRect rect(sf::Vector2i(r * param::sprite_size, 0),
+                         sf::Vector2i(param::sprite_size, param::sprite_size));
+        for (int c = 0; c < param::columns; ++c) {
+            sf::Vector2f position(param::invader_start_x + c * param::invader_spacing,
+                                  param::invader_start_y + r * param::invader_spacing);
+            std::shared_ptr<Invader> inv = std::make_shared<Invader>(rect, position);
+            ships.push_back(inv);
+        }
     }
 }
 
