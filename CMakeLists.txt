@@ -11,6 +11,7 @@ SET(OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/")
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_DIRECTORY})
 
 #### Add External Dependencies ####
+set(CMAKE_WARN_DEPRECATED OFF CACHE BOOL "" FORCE)
 add_subdirectory("lib/SFML")
 set(SFML_INCS "lib/SFML/include")
 link_directories("${CMAKE_BINARY_DIR}/lib/SFML/lib")
@@ -25,7 +26,7 @@ add_custom_target(copy_resources ALL
 
 
 #### Practical 3 ####
-add_executable(space_invaders main.cpp)
+add_executable(space_invaders main.cpp game_system.cpp ship.cpp)
 target_include_directories(space_invaders PRIVATE ${SFML_INCS})
 target_link_libraries(space_invaders sfml-graphics)
 set_target_properties(space_invaders PROPERTIES
