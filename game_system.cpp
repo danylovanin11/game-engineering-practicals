@@ -14,11 +14,14 @@ void GameSystem::init() {
         std::cerr << "Failed to load spritesheet!" << std::endl;
     }
 
-    // create one invader using the first tile of the sheet
-    std::shared_ptr<Invader> inv = std::make_shared<Invader>(
-        sf::IntRect(sf::Vector2i(0, 0), sf::Vector2i(param::sprite_size, param::sprite_size)),
-        sf::Vector2f(100.f, 100.f));
-    ships.push_back(inv);
+    // test: one invader of each type from the top row of the sheet
+    for (int i = 0; i < 6; ++i) {
+        std::shared_ptr<Invader> inv = std::make_shared<Invader>(
+            sf::IntRect(sf::Vector2i(i * param::sprite_size, 0),
+                        sf::Vector2i(param::sprite_size, param::sprite_size)),
+            sf::Vector2f(100.f + i * 50.f, 100.f));
+        ships.push_back(inv);
+    }
 }
 
 void GameSystem::clean() {
