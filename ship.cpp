@@ -2,6 +2,7 @@
 #include "game_system.hpp"
 #include "game_parameters.hpp"
 #include "bullet.hpp"
+#include <cstdlib>
 
 using param = Parameters;
 using gs = GameSystem;
@@ -11,7 +12,8 @@ using gs = GameSystem;
 Ship::Ship() {}
 
 // copy the sf::Sprite part too, otherwise texture and position are lost
-Ship::Ship(const Ship &s) : sf::Sprite(s), _sprite(s._sprite) {}
+Ship::Ship(const Ship &s)
+    : sf::Sprite(s), _sprite(s._sprite), _exploded(s._exploded), _explode_time(s._explode_time) {}
 
 Ship::Ship(sf::IntRect ir) : sf::Sprite() {
     _sprite = ir;
@@ -22,16 +24,48 @@ Ship::Ship(sf::IntRect ir) : sf::Sprite() {
 // pure virtual destructor still needs a definition
 Ship::~Ship() = default;
 
-void Ship::update(const float &dt) {}
+void Ship::update(const float &dt) {
+    // an exploded ship fades out over explosion_time seconds
+    if (_exploded && _explode_time > 0.f) {
+        _explode_time -= dt;
+        if (_explode_time < 0.f) {
+            _explode_time = 0.f;
+        }
+        sf::Color color = getColor();
+        color.a = static_cast<sf::Uint8>(255.f * _explode_time / param::explosion_time);
+        setColor(color);
+    }
+}
 
 // by default a ship does not move down (the player uses this version)
 void Ship::move_down() {}
+
+bool Ship::is_exploded() const {
+    return _exploded;
+}
+
+bool Ship::is_faded() const {
+    return _exploded && _explode_time <= 0.f;
+}
+
+void Ship::explode() {
+    // explosion sprite: 5th tile (index 4) of the second row
+    setTextureRect(sf::IntRect(sf::Vector2i(param::sprite_size * 4, param::sprite_size),
+                               sf::Vector2i(param::sprite_size, param::sprite_size)));
+    _exploded = true;
+    _explode_time = param::explosion_time;
+}
 
 // ---------- Invader ----------
 
 // static members must be defined in exactly one .cpp
 bool Invader::direction;
 float Invader::speed;
+float Invader::fire_time = 0.f;
+
+void Invader::update_fire_timer(const float &dt) {
+    fire_time -= dt;
+}
 
 Invader::Invader() : Ship() {}
 
@@ -46,8 +80,13 @@ Invader::Invader(sf::IntRect ir, sf::Vector2f pos) : Ship(ir) {
 void Invader::update(const float &dt) {
     Ship::update(dt);
 
-    // move left or right at the shared speed
+    // move left or right at the shared speed (dead invaders keep following the group)
     move(sf::Vector2f(dt * (direction ? 1.0f : -1.0f) * speed, 0.0f));
+
+    // dead invaders don't bounce on edges and don't shoot
+    if (_exploded) {
+        return;
+    }
 
     // touching an edge while heading towards it: every invader turns around and drops
     if ((direction && getPosition().x > param::game_width - param::sprite_size / 2.f) ||
@@ -58,10 +97,23 @@ void Invader::update(const float &dt) {
             ship->move_down();
         }
     }
+
+    // once the shared cooldown is over, each invader has a small chance to fire
+    if (fire_time <= 0.f && std::rand() % param::invader_fire_chance == 0) {
+        Bullet::fire(getPosition(), false);
+        fire_time = param::invader_fire_cooldown +
+                    (std::rand() % param::invader_fire_random) / 100.f;
+    }
 }
 
 void Invader::move_down() {
     move(sf::Vector2f(0.f, param::invader_drop));
+}
+
+void Invader::explode() {
+    Ship::explode();
+    // the fewer invaders are left, the faster they go
+    speed += param::invader_kill_acc;
 }
 
 // ---------- Player ----------
@@ -78,6 +130,11 @@ Player::Player()
 
 void Player::update(const float &dt) {
     Ship::update(dt);
+
+    // a dead player can't move or shoot
+    if (_exploded) {
+        return;
+    }
 
     // move left / right, same idea as the paddles in Pong
     float direction = 0.f;

@@ -54,7 +54,28 @@ void Bullet::_update(const float &dt) {
         // off-screen: inactive, do nothing
         return;
     }
+
     // player bullets go up, invader bullets go down
     move(sf::Vector2f(0.f, dt * param::bullet_speed * (_mode ? -1.0f : 1.0f)));
-    // collisions come in the next step
+
+    const sf::FloatRect bounding_box = getGlobalBounds();
+    // we know the first ship is always the player
+    std::shared_ptr<Ship> &player = gs::ships[0];
+
+    for (std::shared_ptr<Ship> &s : gs::ships) {
+        if (_mode && s == player) {
+            // player bullets don't hit the player
+            continue;
+        }
+        if (!_mode && s != player) {
+            // invader bullets don't hit other invaders
+            continue;
+        }
+        if (!s->is_exploded() && s->getGlobalBounds().intersects(bounding_box)) {
+            s->explode();
+            // send the bullet back to the pool (off-screen)
+            setPosition(sf::Vector2f(-100.f, -100.f));
+            return;
+        }
+    }
 }
