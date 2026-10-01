@@ -3,6 +3,7 @@
 #include <memory>
 #include <vector>
 #include "ship.hpp"
+#include "bullet.hpp"
 
 // Holds the game state and the main system functions (instead of globals)
 struct GameSystem {

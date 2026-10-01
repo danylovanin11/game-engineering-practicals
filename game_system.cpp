@@ -1,5 +1,6 @@
 #include "game_system.hpp"
 #include "game_parameters.hpp"
+#include "bullet.hpp"
 #include <iostream>
 
 using param = Parameters;
@@ -13,6 +14,9 @@ void GameSystem::init() {
     if (!spritesheet.loadFromFile("res/img/invaders_sheet.png")) {
         std::cerr << "Failed to load spritesheet!" << std::endl;
     }
+
+    // prepare the bullet pool (needs the sprite-sheet to be loaded)
+    Bullet::init();
 
     // shared invader state: start moving right at the initial speed
     Invader::direction = true;
@@ -48,6 +52,7 @@ void GameSystem::update(const float &dt) {
     for (std::shared_ptr<Ship> &s : ships) {
         s->update(dt);
     }
+    Bullet::update(dt);
 }
 
 void GameSystem::render(sf::RenderWindow &window) {
@@ -55,4 +60,5 @@ void GameSystem::render(sf::RenderWindow &window) {
     for (const std::shared_ptr<Ship> &s : ships) {
         window.draw(*(s.get()));
     }
+    Bullet::render(window);
 }

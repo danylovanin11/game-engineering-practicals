@@ -1,6 +1,7 @@
 #include "ship.hpp"
 #include "game_system.hpp"
 #include "game_parameters.hpp"
+#include "bullet.hpp"
 
 using param = Parameters;
 using gs = GameSystem;
@@ -94,5 +95,13 @@ void Player::update(const float &dt) {
         setPosition(sf::Vector2f(half_size, getPosition().y));
     } else if (getPosition().x > param::game_width - half_size) {
         setPosition(sf::Vector2f(param::game_width - half_size, getPosition().y));
+    }
+
+    // fire with a cooldown, so holding the key doesn't spawn a bullet every frame
+    static float fire_time = 0.f;
+    fire_time -= dt;
+    if (fire_time <= 0.f && sf::Keyboard::isKeyPressed(param::key_fire)) {
+        Bullet::fire(getPosition(), true);
+        fire_time = param::player_fire_cooldown;
     }
 }

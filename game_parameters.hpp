@@ -23,4 +23,11 @@ struct Parameters {
     static constexpr float player_speed = 200.f;    // horizontal speed (px/s)
     static constexpr sf::Keyboard::Key key_left = sf::Keyboard::Left;
     static constexpr sf::Keyboard::Key key_right = sf::Keyboard::Right;
+
+    static constexpr sf::Keyboard::Key key_fire = sf::Keyboard::Space;
+    static constexpr float player_fire_cooldown = 0.7f; // seconds between two player shots
+
+    // bullets
+    static constexpr int bullet_pool_size = 256;  // must stay 256: the pool index is an unsigned char
+    static constexpr float bullet_speed = 200.f;  // vertical speed (px/s)
 };
