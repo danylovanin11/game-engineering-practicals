@@ -6,6 +6,7 @@ struct Parameters {
     static constexpr int game_width = 800;
     static constexpr int game_height = 600;
     static constexpr float time_step = 0.01f;   // pause at the end of each frame (s)
+    static constexpr float tile_size = 100.f;   // size of one maze tile (px)
 
     // maze files
     static constexpr const char *maze_1 = "res/levels/maze_1.txt";

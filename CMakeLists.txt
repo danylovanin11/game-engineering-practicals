@@ -15,6 +15,13 @@ add_subdirectory("lib/SFML")
 set(SFML_INCS "lib/SFML/include")
 link_directories("${CMAKE_BINARY_DIR}/lib/SFML/lib")
 
+#### Level system library ####
+add_library(tile_level STATIC lib_tile_level_loader/level_system.cpp)
+# anyone linking tile_level can #include "level_system.hpp"
+target_include_directories(tile_level INTERFACE lib_tile_level_loader)
+target_include_directories(tile_level PRIVATE ${SFML_INCS})
+target_link_libraries(tile_level sfml-graphics)
+
 #### Copy resources next to the executable ####
 add_custom_target(copy_resources ALL
     COMMAND ${CMAKE_COMMAND} -E copy_directory
@@ -25,7 +32,7 @@ add_custom_target(copy_resources ALL
 #### Practical 4: Tile Maze ####
 add_executable(tile_maze main.cpp game_system.cpp entity.cpp player.cpp scenes.cpp)
 target_include_directories(tile_maze PRIVATE ${SFML_INCS})
-target_link_libraries(tile_maze sfml-graphics)
+target_link_libraries(tile_maze tile_level sfml-graphics)
 set_target_properties(tile_maze PROPERTIES
     VS_DEBUGGER_WORKING_DIRECTORY ${OUTPUT_DIRECTORY})
 add_dependencies(tile_maze copy_resources)
