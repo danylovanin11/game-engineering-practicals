@@ -1,80 +1,91 @@
 #include "game_system.hpp"
-#include "game_parameters.hpp"
-#include "bullet.hpp"
-#include <cstdlib>
-#include <ctime>
-#include <iostream>
-
-using param = Parameters;
 
 // static members declared in the header must be defined in exactly one .cpp
-sf::Texture GameSystem::spritesheet;
-std::vector<std::shared_ptr<Ship>> GameSystem::ships;
+std::shared_ptr<Scene> GameSystem::_active_scene;
 
-void GameSystem::init() {
-    // seed the random numbers used for invader shooting
-    std::srand(static_cast<unsigned>(std::time(nullptr)));
+// ---------- Scene ----------
 
-    // load the whole sprite-sheet once
-    if (!spritesheet.loadFromFile("res/img/invaders_sheet.png")) {
-        std::cerr << "Failed to load spritesheet!" << std::endl;
+void Scene::update(const float &dt) {
+    for (std::shared_ptr<Entity> &ent : _entities) {
+        ent->update(dt);
     }
+}
 
-    // prepare the bullet pool (needs the sprite-sheet to be loaded)
-    Bullet::init();
+void Scene::render(sf::RenderWindow &window) {
+    for (std::shared_ptr<Entity> &ent : _entities) {
+        ent->render(window);
+    }
+}
 
-    // shared invader state: start moving right at the initial speed
-    Invader::direction = true;
-    Invader::speed = param::invader_speed;
-    Invader::fire_time = param::invader_fire_cooldown;
+void Scene::unload() {
+    _entities.clear();
+}
 
-    // the player is always the first ship in the list
-    std::shared_ptr<Player> player = std::make_shared<Player>();
-    ships.push_back(player);
+// ---------- GameSystem ----------
 
-    // grid of invaders: each row uses a different sprite of the sheet
-    for (int r = 0; r < param::rows; ++r) {
-        sf::IntRect rect(sf::Vector2i(r * param::sprite_size, 0),
-                         sf::Vector2i(param::sprite_size, param::sprite_size));
-        for (int c = 0; c < param::columns; ++c) {
-            sf::Vector2f position(param::invader_start_x + c * param::invader_spacing,
-                                  param::invader_start_y + r * param::invader_spacing);
-            std::shared_ptr<Invader> inv = std::make_shared<Invader>(rect, position);
-            ships.push_back(inv);
+void GameSystem::start(unsigned int width, unsigned int height,
+                       const std::string &name, const float &time_step) {
+    sf::RenderWindow window(sf::VideoMode(width, height), name);
+    window.setVerticalSyncEnabled(true);
+    _init();
+
+    sf::Clock clock;
+    sf::Event event;
+    while (window.isOpen()) {
+        const float dt = clock.restart().asSeconds();
+
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+                clean();
+                return;
+            }
         }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+            window.close();
+        }
+
+        window.clear();
+        _update(dt);
+        _render(window);
+        sf::sleep(sf::seconds(time_step));
+        // wait for vsync
+        window.display();
     }
+    clean();
 }
 
 void GameSystem::clean() {
-    // free the memory of every ship
-    for (std::shared_ptr<Ship> &ship : ships) {
-        ship.reset();
+    if (_active_scene) {
+        _active_scene->unload();
     }
-    ships.clear();
+    _active_scene.reset();
 }
 
-void GameSystem::update(const float &dt) {
-    // shared invader cooldown goes down once per frame, not once per invader
-    Invader::update_fire_timer(dt);
-
-    // polymorphism: each ship runs its own update()
-    for (std::shared_ptr<Ship> &s : ships) {
-        s->update(dt);
-    }
-    Bullet::update(dt);
-
-    // the player has been hit and its explosion is over: restart the game
-    // (done here, after the loops, so we never clear the list while iterating it)
-    if (ships[0]->is_faded()) {
-        clean();
-        init();
+void GameSystem::reset() {
+    // reload the active scene from scratch
+    if (_active_scene) {
+        _active_scene->unload();
+        _active_scene->load();
     }
 }
 
-void GameSystem::render(sf::RenderWindow &window) {
-    // ships inherit from sf::Sprite, so SFML can draw them directly
-    for (const std::shared_ptr<Ship> &s : ships) {
-        window.draw(*(s.get()));
+void GameSystem::set_active_scene(const std::shared_ptr<Scene> &act_sc) {
+    _active_scene = act_sc;
+}
+
+void GameSystem::_init() {
+    // nothing to set up yet: each scene loads its own content
+}
+
+void GameSystem::_update(const float &dt) {
+    if (_active_scene) {
+        _active_scene->update(dt);
     }
-    Bullet::render(window);
+}
+
+void GameSystem::_render(sf::RenderWindow &window) {
+    if (_active_scene) {
+        _active_scene->render(window);
+    }
 }

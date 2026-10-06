@@ -1,34 +1,15 @@
-#include <SFML/Graphics.hpp>
+#include <memory>
 #include "game_parameters.hpp"
 #include "game_system.hpp"
+#include "scenes.hpp"
 
 using param = Parameters;
-using gs = GameSystem;
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(param::game_width, param::game_height), "Space Invaders");
-    window.setVerticalSyncEnabled(true);
-
-    gs::init();
-
-    sf::Clock clock;
-
-    while (window.isOpen()) {
-        const float dt = clock.restart().asSeconds();
-
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
-                window.close();
-            }
-        }
-
-        window.clear(sf::Color::Black);
-        gs::update(dt);
-        gs::render(window);
-        window.display();
-    }
-
-    gs::clean();
+    Scenes::maze = std::make_shared<MazeScene>();
+    std::static_pointer_cast<MazeScene>(Scenes::maze)->set_file_path(param::maze_1);
+    Scenes::maze->load();
+    GameSystem::set_active_scene(Scenes::maze);
+    GameSystem::start(param::game_width, param::game_height, "Tile Maze", param::time_step);
     return 0;
 }
