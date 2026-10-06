@@ -16,7 +16,19 @@ private:
     std::string _file_path;
 };
 
+class EndScene : public Scene {
+public:
+    EndScene() = default;
+    void load() override;
+    void render(sf::RenderWindow &window) override;
+
+private:
+    sf::Text win_text;
+    sf::Font font;
+};
+
 // every scene of the game, reachable from anywhere in the code
 struct Scenes {
     static std::shared_ptr<Scene> maze;
+    static std::shared_ptr<Scene> end;
 };

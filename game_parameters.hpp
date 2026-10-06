@@ -17,4 +17,9 @@ struct Parameters {
     static constexpr sf::Keyboard::Key key_down = sf::Keyboard::Down;
     static constexpr sf::Keyboard::Key key_left = sf::Keyboard::Left;
     static constexpr sf::Keyboard::Key key_right = sf::Keyboard::Right;
+
+    // ending screen
+    static constexpr const char *font_path = "res/fonts/RobotoMono-Regular.ttf";
+    static constexpr const char *end_text = "You win!";
+    static constexpr unsigned int end_text_size = 48;
 };
